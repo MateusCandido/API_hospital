@@ -85,7 +85,12 @@
 
 
         //carrega lista de hospitais
-        fetch('https://cadastre-hospital-pacientes.herokuapp.com/hospital').then(function(response){
+        fetch('https://cadastre-hospital-pacientes.herokuapp.com/hospital'),{
+            method:'get',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }).then(function(response){
             response.json().then(function(data){
                 console.log(data)
                 if(data.length > 0){
