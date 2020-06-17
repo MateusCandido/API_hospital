@@ -1,0 +1,77 @@
+body{
+    background-image: url("/img/bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+/* .menu_header{
+    padding-top: 20px;
+    padding-bottom: 20px;
+} */
+.menu_header img{
+    width: 100px;
+    height: auto;
+}
+.menu_header li{
+    background-color: #173f96;
+    margin: 5px;
+    border-radius: 25px;
+}
+.menu_header li a{
+    color: #FFFFFF;
+}
+.menu_header .active{
+    background-color: #0088ff;
+}
+.menu_header li:hover{
+    background-color: #0088ff;
+}
+.menu_header li:hover a{
+    color: #FFFFFF;
+}
+.menu_header li a{
+    font-size: 20px;
+}
+.sec_home,.sec_paciente,.sec_hospital{
+    margin: 5% 0 0 0;
+}
+.sec_home h1,.sec_paciente h1,.sec_hospital h1{
+    margin: 0 0 50px 0;
+}
+.box_form{
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+}
+.box_form h1{
+    color: rgb(47, 94, 94);
+}
+.box_form img, .box_card img{
+    width: 150px;
+    height: auto;
+}
+.box_card{
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    
+}
+
+.img_sucess{
+    width: 200px;
+    height: auto;
+    margin: 50px 0;
+}
+.box_sucess{
+    padding: 100px 20px;
+}
+.box_paciente{
+    padding: 20px;
+    border: 1px solid #0088ff;
+    border-radius: 5px;
+    margin: 0 0 10px 0;
+}
+.scroll{
+    overflow-y: scroll;
+    max-height: 600px;
+}

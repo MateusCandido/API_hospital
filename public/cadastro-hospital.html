@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API - Hospital</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <ul class="menu_header nav bg-light justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" href="/">Início</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="cadastro-hospital.html">Hospitais</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="cadastro-paciente.html">Pacientes</a>
+        </li>
+    </ul>
+    <section class="sec_hospital">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 offset-md-4 col-md-4 text-center">
+                    <div class="box_card d-none box_sucess" id="sucess">
+                        <h2>Cadastro realizado com sucesso!</h2>
+                        <img class="img_sucess" src="/img/sucesso.png" alt="">
+                        <button type="button" onclick="showForm()" class="btn btn-primary">Cadastrar outro Hospital</button>
+                    </div>
+                    <div class="box_form" id="form">
+                        <img src="/img/logo.jpg" alt="">
+                        <h1>Cadastre um Hospital</h1>
+                        <form>
+                            <div class="form-group">
+                                <input type="name" id="nome_h" placeholder="Nome do hospital" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="numLeitos" placeholder="Número de leitos" class="form-control">
+                            </div>
+                            <button type="button" onclick="cadastroHospital()" type="" class="btn btn-primary">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 box_card">
+                    <div class="scroll" id="listaHospitais">
+                        <h2>Lista de Hospitais</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function cadastroHospital(){
+            fetch('http://localhost:3000/hospital',{
+                method:'post',
+                body:JSON.stringify({
+                    nomeH: document.getElementById("nome_h").value,
+                    numLeitos: document.getElementById("numLeitos").value,
+                }),headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                }
+            }).then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                console.log(data)
+            });
+
+            var form = document.getElementById("form");
+            var sucess = document.getElementById("sucess");
+            form.classList.add("d-none");
+            sucess.classList.remove("d-none");
+
+        }
+        function showForm(){
+            var form = document.getElementById("form");
+            var sucess = document.getElementById("sucess");
+            form.classList.remove("d-none");
+            sucess.classList.add("d-none");
+        }
+
+
+        //carrega lista de hospitais
+        fetch('http://localhost:3000/hospital').then(function(response){
+            response.json().then(function(data){
+                console.log(data)
+                if(data.length > 0){
+                    var len = data.length;
+                    for(var i = 0; i < len; i++){
+                        var nomeH = data[i].nomeH;
+                        var numLeitos = data[i].numLeitos;
+
+                        var Hospital = '<div class="box_paciente"><p>Hospital: '+nomeH+'</p><p>Número de leitos: '+numLeitos+'</p></div>';
+
+                        $('#listaHospitais').append(Hospital);
+                    }
+                }
+            });
+        })
+        .catch(function(err){ 
+            console.error('Falha ao pegar a informação', err);
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API - Hospital</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <ul class="menu_header nav bg-light justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" href="/">Início</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="cadastro-hospital.html">Hospital</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="cadastro-paciente.html">Paciente</a>
+        </li>
+    </ul>
+        
+    <section class="sec_paciente">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 offset-md-4 col-md-4 text-center">
+                    <div class="box_card d-none box_sucess" id="sucess">
+                        <h2>Cadastro realizado com sucesso!</h2>
+                        <img class="img_sucess" src="/img/sucesso.png" alt="">
+                        <button type="button" onclick="showForm()" class="btn btn-primary">Cadastrar outro paciente</button>
+                    </div>
+                    <div class="box_form" id="form">
+                        <img src="/img/logo.jpg" alt="">
+                        <h1>Cadastre um Paciente</h1>
+                        <form>
+                            <div class="form-group">
+                                <input type="cpf" id="cpf" placeholder="CPF" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="name" id="nome_p" placeholder="Nome" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="idade" id="idade" placeholder="Idade" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <select id="sexo" class="form-control">
+                                    <option value="">Sexo</option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="feminino">Feminino</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="l_hospital" class="form-control">
+                                    <option value="">Hospital</option>
+                                </select>
+                            </div>
+                            <button type="button" onclick="cadastroPaciente()" class="btn btn-primary">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 box_card">
+                    <div class="scroll" id="listaPacientes">
+                        <h2>Lista de Pacientes</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        //Lista hospitais
+        fetch('http://localhost:3000/hospital',{
+            method:'get',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }).then(function(response){
+            response.json().then(function(data){
+                if(data.length > 0){
+                    var len = data.length;
+                    for(var i = 0; i < len; i++){
+                        var selectHospital = document.getElementById("l_hospital");
+                        
+                        var option = document.createElement("option");
+                        var nome = {nomeH:data[i].nomeH,_id:data[i]._id};
+                        
+                        option.text = nome.nomeH;
+                        option.value = nome.nomeH;
+                        option.dataset.idhospital = nome._id;
+                        selectHospital.add(option);
+                        
+                    }
+                }
+            });
+        }).catch(function(err){ 
+            console.error('Falha ao pegar a informação', err);
+        });
+        
+        //Cadastra Paciente
+        function cadastroPaciente(){
+            var optionHospital = document.getElementById("l_hospital");
+            var optionID = optionHospital.options[optionHospital.selectedIndex].dataset.idhospital;
+            fetch('http://localhost:3000/paciente',{
+                method:'post',
+                body:JSON.stringify({
+                    CPF: document.getElementById("cpf").value,
+                    nomeP: document.getElementById("nome_p").value,
+                    idade: document.getElementById("idade").value,
+                    sexo: document.getElementById("sexo").value,
+                    hospital: document.getElementById("l_hospital").value,
+                    idHospital: optionID
+                }),headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                }
+            }).then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                console.log(data)
+            });
+            
+            var form = document.getElementById("form");
+            var sucess = document.getElementById("sucess");
+            form.classList.add("d-none");
+            sucess.classList.remove("d-none");
+        }
+        
+        //Exibe mensagem de sucesso para o usuário
+        function showForm(){
+            var form = document.getElementById("form");
+            var sucess = document.getElementById("sucess");
+            form.classList.remove("d-none");
+            sucess.classList.add("d-none");
+        }
+
+        //carrega todos os pacientes
+       // $(document).ready(function() {
+			fetch('http://localhost:3000/paciente')
+			.then(function(response){
+				response.json().then(function(data){
+					console.log(data)
+					if(data.length > 0){
+						var len = data.length;
+						for(var i = 0; i < len; i++){
+                            var nomeP = data[i].nomeP;
+                            var idade = data[i].idade;
+                            var sexo = data[i].sexo;
+                            var hospital = data[i].hospital;
+
+                            var Paciente = '<div class="box_paciente"><p>Nome: '+nomeP+'</p><p>Idade: '+idade+'</p><p>Gênero: '+sexo+'</p><p>Hospital em que reside: '+hospital+'</p></div>';
+
+                            $('#listaPacientes').append(Paciente);
+						}
+					}
+				});
+			})
+			.catch(function(err){ 
+				console.error('Falha ao pegar a informação', err);
+			});
+		//});
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
