@@ -70,7 +70,7 @@
     </section>
     <script>
         //Lista hospitais
-        fetch('http://localhost:3000/hospital',{
+        fetch('https://cadastre-hospital-pacientes.herokuapp.com/hospital',{
             method:'get',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -101,7 +101,7 @@
         function cadastroPaciente(){
             var optionHospital = document.getElementById("l_hospital");
             var optionID = optionHospital.options[optionHospital.selectedIndex].dataset.idhospital;
-            fetch('http://localhost:3000/paciente',{
+            fetch('https://cadastre-hospital-pacientes.herokuapp.com/paciente',{
                 method:'post',
                 body:JSON.stringify({
                     CPF: document.getElementById("cpf").value,
@@ -135,7 +135,7 @@
 
         //carrega todos os pacientes
        // $(document).ready(function() {
-			fetch('http://localhost:3000/paciente')
+			fetch('https://cadastre-hospital-pacientes.herokuapp.com/paciente')
 			.then(function(response){
 				response.json().then(function(data){
 					console.log(data)

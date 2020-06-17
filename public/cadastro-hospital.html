@@ -56,7 +56,7 @@
     </section>
     <script>
         function cadastroHospital(){
-            fetch('http://localhost:3000/hospital',{
+            fetch('https://cadastre-hospital-pacientes.herokuapp.com/hospital',{
                 method:'post',
                 body:JSON.stringify({
                     nomeH: document.getElementById("nome_h").value,
@@ -85,7 +85,7 @@
 
 
         //carrega lista de hospitais
-        fetch('http://localhost:3000/hospital').then(function(response){
+        fetch('https://cadastre-hospital-pacientes.herokuapp.com/hospital').then(function(response){
             response.json().then(function(data){
                 console.log(data)
                 if(data.length > 0){

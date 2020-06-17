@@ -28,7 +28,7 @@ app.use(PacienteRoutes)
 
 app.listen(port, function(){
     // const response = 'Server rodando em http://localhost:'+port+'/';
-    console.log('Server rodando em http://localhost:'+port+'/');
+    console.log('Server rodando em https://cadastre-hospital-pacientes.herokuapp.com/');
 })
 
 //Conexão com Banco de Dados Mongo
